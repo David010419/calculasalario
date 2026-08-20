@@ -21,41 +21,27 @@ const STANDARD_BANNER_OPTIONS = {
   params: {},
 };
 
-// Adsterra doesn't fire a "no fill" event on these simple invoke.js tags, so we poll the
-// DOM briefly for a real ad creative and collapse the slot if nothing ever loads — an
-// empty reserved box looks broken, no box at all just looks like there was never an ad there.
-const FILL_CHECK_DELAY_MS = 2500;
-
 /** Adsterra native banner: script scans the DOM for its container id and injects the ad markup. */
 function NativeBannerAd({ className = "" }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hasFill, setHasFill] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
     script.setAttribute("data-cfasync", "false");
     script.src = NATIVE_BANNER_SRC;
+    script.onerror = () => setFailed(true);
     containerRef.current?.appendChild(script);
 
-    const timer = setTimeout(() => {
-      const hasImage = !!containerRef.current?.querySelector("img[src]");
-      const hasRealLink = Array.from(containerRef.current?.querySelectorAll("a[href]") ?? []).some((a) => {
-        const href = a.getAttribute("href") ?? "";
-        return href.length > 2 && href !== "//" && href !== "#";
-      });
-      setHasFill(hasImage || hasRealLink);
-    }, FILL_CHECK_DELAY_MS);
-
     return () => {
-      clearTimeout(timer);
       script.remove();
     };
   }, []);
 
   return (
     <div
-      className={`ad-container-top mx-auto my-5 w-full ${hasFill ? "" : "hidden"} ${className}`}
+      className={`ad-container-top mx-auto my-5 w-full ${failed ? "hidden" : ""} ${className}`}
       aria-hidden="true"
     >
       <div ref={containerRef} id={NATIVE_BANNER_CONTAINER_ID} />
@@ -73,7 +59,7 @@ function NativeBannerAd({ className = "" }: { className?: string }) {
  */
 function StandardBannerAd({ variant, className = "" }: { variant: "middle" | "bottom"; className?: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [hasFill, setHasFill] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const win = window as typeof window & { atOptions?: unknown };
@@ -81,16 +67,10 @@ function StandardBannerAd({ variant, className = "" }: { variant: "middle" | "bo
 
     const script = document.createElement("script");
     script.src = STANDARD_BANNER_SRC;
+    script.onerror = () => setFailed(true);
     wrapperRef.current?.appendChild(script);
 
-    const timer = setTimeout(() => {
-      const iframe = wrapperRef.current?.querySelector("iframe");
-      const filled = !!iframe && !!iframe.src && !iframe.src.endsWith("about:blank");
-      setHasFill(filled);
-    }, FILL_CHECK_DELAY_MS);
-
     return () => {
-      clearTimeout(timer);
       script.remove();
       delete win.atOptions;
     };
@@ -98,7 +78,7 @@ function StandardBannerAd({ variant, className = "" }: { variant: "middle" | "bo
 
   return (
     <div
-      className={`ad-container-${variant} mx-auto my-5 flex w-full justify-center overflow-x-auto ${hasFill ? "" : "hidden"} ${className}`}
+      className={`ad-container-${variant} mx-auto my-5 flex w-full justify-center overflow-x-auto ${failed ? "hidden" : ""} ${className}`}
       aria-hidden="true"
     >
       <div ref={wrapperRef} />
