@@ -63,8 +63,15 @@ function NativeBannerAd({ className = "" }: { className?: string }) {
   );
 }
 
-/** Adsterra standard banner: reads window.atOptions, must be set before invoke.js loads. */
-function StandardBannerAd({ className = "" }: { className?: string }) {
+/**
+ * Adsterra standard banner: reads window.atOptions, must be set before invoke.js loads.
+ * Reused for both "middle" and "bottom" slots — Adsterra scopes the injected iframe to its
+ * own <script> tag (not document.write), so two independent instances on the same page are
+ * safe. Note: since both instances share the same ad key, Adsterra's dashboard will report
+ * impressions from both placements as one zone — request a second banner code if you need
+ * separate stats per placement.
+ */
+function StandardBannerAd({ variant, className = "" }: { variant: "middle" | "bottom"; className?: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [hasFill, setHasFill] = useState(true);
 
@@ -91,7 +98,7 @@ function StandardBannerAd({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`ad-container-bottom mx-auto my-5 flex w-full justify-center overflow-x-auto ${hasFill ? "" : "hidden"} ${className}`}
+      className={`ad-container-${variant} mx-auto my-5 flex w-full justify-center overflow-x-auto ${hasFill ? "" : "hidden"} ${className}`}
       aria-hidden="true"
     >
       <div ref={wrapperRef} />
@@ -99,23 +106,20 @@ function StandardBannerAd({ className = "" }: { className?: string }) {
   );
 }
 
-function PlaceholderAd({ variant, className = "" }: { variant: "middle" | "smartlink"; className?: string }) {
-  const label = variant === "smartlink" ? "Ofertas patrocinadas" : "Publicidad";
-  const sizeClass = variant === "smartlink" ? "min-h-[52px] w-full" : "min-h-[90px] w-full";
-
+function PlaceholderAd({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`ad-container-${variant} my-5 mx-auto flex items-center justify-center rounded-lg border border-dashed border-border bg-surface/60 ${sizeClass} ${className}`}
+      className={`ad-container-smartlink my-5 mx-auto flex min-h-[52px] w-full items-center justify-center rounded-lg border border-dashed border-border bg-surface/60 ${className}`}
       aria-hidden="true"
-      data-ad-slot={variant}
+      data-ad-slot="smartlink"
     >
-      <span className="text-xs uppercase tracking-wide text-text-muted">{label}</span>
+      <span className="text-xs uppercase tracking-wide text-text-muted">Ofertas patrocinadas</span>
     </div>
   );
 }
 
 export default function AdSlot({ variant, className = "" }: AdSlotProps) {
   if (variant === "top") return <NativeBannerAd className={className} />;
-  if (variant === "bottom") return <StandardBannerAd className={className} />;
-  return <PlaceholderAd variant={variant} className={className} />;
+  if (variant === "middle" || variant === "bottom") return <StandardBannerAd variant={variant} className={className} />;
+  return <PlaceholderAd className={className} />;
 }
