@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 import Link from "next/link";
 import TrendingCareers from "@/components/TrendingCareers";
 import AdSlot from "@/components/AdSlot";
@@ -6,7 +7,7 @@ import { formatEUR, formatWorkforce } from "@/lib/calculations";
 import { CAREERS } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Empleos en Auge España 2025 | Trabajos con Más Futuro y Mejor Pagados",
+  title: "Empleos en auge en España: trabajos con más futuro y mejor pagados",
   description:
     "Descubre los empleos con más demanda en España: qué se paga, cuánta gente se dedica a cada profesión y cuál es su proyección de crecimiento salarial 2025.",
   alternates: { canonical: "/empleos-en-auge" },
@@ -25,7 +26,7 @@ const itemListSchema = {
       "@type": "ListItem",
       position: i + 1,
       name: career.name,
-      url: `https://calculadora-salarios.es/?carrera=${career.id}`,
+      url: `${SITE_URL}/?carrera=${career.id}`,
     })),
 };
 
@@ -51,12 +52,12 @@ export default function EmpleosEnAugePage() {
       </div>
 
       <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-surface p-5">
+        <div className="game-card p-5">
           <p className="text-xs uppercase tracking-wide text-text-muted">Mayor tendencia 2025</p>
           <p className="mt-1.5 font-heading text-lg font-bold text-text">{topByTrend[0].name}</p>
           <p className="text-sm font-semibold text-accent">+{topByTrend[0].trend.toFixed(1)}% proyectado</p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface p-5">
+        <div className="game-card p-5">
           <p className="text-xs uppercase tracking-wide text-text-muted">Techo salarial más alto</p>
           <p className="mt-1.5 font-heading text-lg font-bold text-text">
             {[...CAREERS].sort((a, b) => b.max - a.max)[0].name}
@@ -65,7 +66,7 @@ export default function EmpleosEnAugePage() {
             hasta {formatEUR([...CAREERS].sort((a, b) => b.max - a.max)[0].max)}
           </p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface p-5">
+        <div className="game-card p-5">
           <p className="text-xs uppercase tracking-wide text-text-muted">Profesión más común</p>
           <p className="mt-1.5 font-heading text-lg font-bold text-text">{topByWorkforce[0].name}</p>
           <p className="text-sm font-semibold text-secondary">
@@ -86,7 +87,7 @@ export default function EmpleosEnAugePage() {
         </div>
       </section>
 
-      <section className="mt-12 rounded-2xl border border-border bg-surface p-6">
+      <section className="mt-12 game-card p-6">
         <h2 className="font-heading text-lg font-semibold text-text sm:text-xl">
           ¿Cómo interpretar este ranking?
         </h2>
@@ -114,13 +115,13 @@ export default function EmpleosEnAugePage() {
         </div>
       </section>
 
-      <div className="mt-10 rounded-2xl border border-border bg-gradient-to-br from-primary/5 to-accent/5 p-6 text-center">
+      <div className="mt-10 game-card p-6 text-center">
         <p className="font-heading text-lg font-semibold text-text">
           ¿Quieres saber cuánto podrías ganar tú?
         </p>
         <Link
           href="/"
-          className="mt-3 inline-block rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-dark"
+          className="game-btn mt-3 px-5 py-2.5 text-sm"
         >
           Ir a la calculadora →
         </Link>

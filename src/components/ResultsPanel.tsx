@@ -2,6 +2,7 @@
 
 import AnimatedNumber from "./AnimatedNumber";
 import ComparisonBars from "./ComparisonBars";
+import GovernmentScenarios from "./GovernmentScenarios";
 import ProjectionTable from "./ProjectionTable";
 import ShareButtons from "./ShareButtons";
 import RelatedCareers from "./RelatedCareers";
@@ -31,29 +32,29 @@ export default function ResultsPanel({ input, result, shareUrl, onSelectCareer }
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Card principal */}
-      <div className="rounded-2xl bg-gradient-to-br from-primary to-primary-dark p-6 text-white shadow-lg sm:p-8">
-        <p className="text-sm font-medium text-blue-100">{career.name} · {input.years} años de experiencia</p>
+      <div className="game-hero rounded-[1.25rem] border-2 border-ink p-6 shadow-[5px_5px_0_var(--color-ink)] sm:p-8">
+        <p className="text-sm font-medium text-white/85">{career.name} · {input.years} años de experiencia</p>
         <p className="mt-2 font-heading text-3xl font-bold sm:text-4xl">
           <AnimatedNumber value={breakdown.brutoAnual} formatter={formatEUR} />
         </p>
-        <p className="text-sm text-blue-100">salario bruto anual estimado</p>
+        <p className="text-sm text-white/85">salario bruto anual estimado</p>
 
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/20 pt-4">
           <div>
             <p className="text-lg font-semibold sm:text-xl">
               <AnimatedNumber value={breakdown.netoMensual} formatter={formatEUR} />
             </p>
-            <p className="text-xs text-blue-100">neto mensual (12 pagas)</p>
+            <p className="text-xs text-white/85">neto mensual (12 pagas)</p>
           </div>
           <div>
             <p className={`text-lg font-semibold sm:text-xl ${isAbove ? "text-emerald-300" : "text-amber-200"}`}>
               {formatPercent(vsNational)}
             </p>
-            <p className="text-xs text-blue-100">vs. media nacional</p>
+            <p className="text-xs text-white/85">vs. media nacional</p>
           </div>
           <div>
             <p className="text-lg font-semibold sm:text-xl">Top {100 - percentile}%</p>
-            <p className="text-xs text-blue-100">de profesionales en España</p>
+            <p className="text-xs text-white/85">de profesionales en España</p>
           </div>
         </div>
       </div>
@@ -65,7 +66,7 @@ export default function ResultsPanel({ input, result, shareUrl, onSelectCareer }
       </p>
 
       {/* Tabla desglosada */}
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <h2 className="mb-4 font-heading text-xl font-semibold text-text">Desglose bruto → neto</h2>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[360px] border-collapse text-sm">
@@ -99,8 +100,10 @@ export default function ResultsPanel({ input, result, shareUrl, onSelectCareer }
         </div>
       </section>
 
+      <GovernmentScenarios brutoAnual={breakdown.brutoAnual} />
+
       {/* Comparativa */}
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <h2 className="mb-4 font-heading text-xl font-semibold text-text">Comparativa con el mercado</h2>
         <ComparisonBars
           bars={[
@@ -113,13 +116,13 @@ export default function ResultsPanel({ input, result, shareUrl, onSelectCareer }
       </section>
 
       {/* Proyección */}
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <h2 className="mb-4 font-heading text-xl font-semibold text-text">Proyección de carrera (5-10 años)</h2>
         <ProjectionTable current={breakdown.brutoAnual} projection={projection} />
       </section>
 
       {/* Info adicional */}
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <h2 className="mb-4 font-heading text-xl font-semibold text-text">Mercado laboral</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
           <div className="rounded-xl bg-background p-4">
@@ -135,11 +138,11 @@ export default function ResultsPanel({ input, result, shareUrl, onSelectCareer }
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <RelatedCareers careerIds={career.related} onSelect={onSelectCareer} />
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+      <section className="game-card p-5 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <ShareButtons careerName={career.name} netoMensual={breakdown.netoMensual} shareUrl={shareUrl} />
           <PdfExportButton input={input} result={result} />

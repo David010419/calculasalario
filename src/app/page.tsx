@@ -2,11 +2,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 import Calculator from "@/components/Calculator";
 import AdSlot from "@/components/AdSlot";
+import AdvertiseBanner from "@/components/AdvertiseBanner";
 import FAQSection from "@/components/FAQSection";
 import FaqJsonLd from "@/components/FaqJsonLd";
-import NewsletterSignup from "@/components/NewsletterSignup";
+import PartyBadge from "@/components/PartyBadge";
 import TrendingCareers from "@/components/TrendingCareers";
 import { CAREERS } from "@/lib/data";
+import { SCENARIOS } from "@/lib/scenarios";
 
 export default function Home() {
   return (
@@ -14,23 +16,91 @@ export default function Home() {
       <FaqJsonLd />
 
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-b from-primary/5 to-background">
-        <div className="mx-auto max-w-6xl px-4 py-10 text-center sm:px-6 sm:py-14">
-          <h1 className="font-heading text-2xl font-bold text-text sm:text-4xl">
-            Calculadora de Salarios España 2025
-            <span className="block text-primary">Estima tu sueldo por carrera</span>
+      <section className="game-hero relative overflow-hidden border-b-2 border-ink">
+        <span aria-hidden="true" className="animate-float absolute left-[6%] top-8 text-4xl sm:text-5xl">
+          💸
+        </span>
+        <span
+          aria-hidden="true"
+          className="animate-float absolute right-[8%] top-12 text-4xl [animation-delay:1.2s] sm:text-5xl"
+        >
+          🪙
+        </span>
+        <span
+          aria-hidden="true"
+          className="animate-float absolute bottom-6 right-[22%] hidden text-4xl [animation-delay:2s] sm:block"
+        >
+          🚀
+        </span>
+        <div className="relative mx-auto max-w-6xl px-4 py-12 text-center sm:px-6 sm:py-16">
+          <span className="game-chip px-3 py-1 text-xs sm:text-sm">
+            ⚡ Gratis · sin registro · en 1 minuto
+          </span>
+          <h1 className="text-outline mt-4 font-heading text-4xl font-bold leading-tight sm:text-6xl">
+            ¿Cuánto <span className="text-sun">deberías</span> cobrar?
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-text-muted sm:text-base">
-            Basado en datos y estudios de mercado del Ministerio de Trabajo 2024-2025. Calcula tu
-            salario según tu carrera, experiencia, comunidad autónoma y sector en menos de un minuto.
+          <p className="mx-auto mt-4 max-w-2xl text-base font-semibold text-white/90 sm:text-lg">
+            Calculadora de salarios España 2026: elige tu carrera, tu experiencia y tu comunidad, y
+            descubre tu sueldo bruto, tu neto y en qué nivel estás.
           </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <a href="#calculadora" className="game-btn game-btn-sun px-5 py-3 text-base">
+              🎮 Empezar partida
+            </a>
+            <Link href="/salario-segun-gobierno" className="game-btn px-5 py-3 text-base">
+              🗳️ Modo elecciones 29-N
+            </Link>
+          </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        {/* Banner simulador electoral */}
+        <Link
+          href="/salario-segun-gobierno"
+          className="game-hero group relative mb-8 block overflow-hidden rounded-[1.25rem] border-2 border-ink shadow-[6px_6px_0_var(--color-ink)] transition hover:-translate-y-1"
+        >
+          <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <span className="game-chip px-3 py-1 text-xs sm:text-sm">
+                🗳️ Nuevo · Elecciones generales 29-N
+              </span>
+              <p className="text-outline mt-3 font-heading text-3xl font-bold leading-tight sm:text-4xl">
+                Calcula tu salario según el <span className="text-sun">cambio de gobierno</span>
+              </p>
+              <p className="mt-2 max-w-xl text-base font-semibold text-white/90">
+                Elige partido, mira cuánto cobrarías al mes con su IRPF y compártelo.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <span className="game-btn game-btn-sun animate-nudge px-6 py-3.5 text-lg">
+                  Comparar partidos →
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/70 bg-black px-4 py-2 font-heading text-sm font-semibold text-white">
+                  <span aria-hidden="true" className="text-base">𝕏</span>
+                  Comparte tu resultado por X
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/70 bg-[#128c7e] px-4 py-2 font-heading text-sm font-semibold text-white">
+                  <span aria-hidden="true">💬</span>
+                  y por WhatsApp
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-3 lg:grid-cols-2">
+              {SCENARIOS.map((scenario, i) => (
+                <PartyBadge
+                  key={scenario.id}
+                  scenario={scenario}
+                  className="animate-float"
+                  style={{ animationDelay: `${i * 0.6}s` }}
+                />
+              ))}
+            </div>
+          </div>
+        </Link>
+
         <AdSlot variant="top" />
 
-        <section aria-label="Calculadora de salario">
+        <section id="calculadora" aria-label="Calculadora de salario" className="scroll-mt-24">
           <h2 className="sr-only">¿Cuánto ganas según tu profesión?</h2>
           <Suspense fallback={<div className="h-[600px]" />}>
             <Calculator />
@@ -40,14 +110,14 @@ export default function Home() {
         <section className="mt-14">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="font-heading text-xl font-bold text-text sm:text-2xl">
-                Empleos en auge en España
+              <h2 className="font-heading text-2xl font-bold text-text sm:text-3xl">
+                🔥 Empleos en auge en España
               </h2>
-              <p className="mt-1 text-sm text-text-muted">
+              <p className="mt-1 text-sm font-semibold text-text-muted">
                 Los trabajos con más demanda, mejor pagados y mayor proyección de crecimiento.
               </p>
             </div>
-            <Link href="/empleos-en-auge" className="text-sm font-semibold text-primary hover:underline">
+            <Link href="/empleos-en-auge" className="text-sm font-bold text-primary hover:underline">
               Ver ranking completo →
             </Link>
           </div>
@@ -56,20 +126,16 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="mt-10">
-          <NewsletterSignup />
-        </div>
-
         <section className="mt-14">
-          <h2 className="mb-4 font-heading text-xl font-bold text-text sm:text-2xl">
-            Todas las profesiones disponibles
+          <h2 className="mb-4 font-heading text-2xl font-bold text-text sm:text-3xl">
+            🎯 Todas las profesiones disponibles
           </h2>
           <div className="flex flex-wrap gap-2">
             {CAREERS.map((career) => (
               <Link
                 key={career.id}
                 href={`/?carrera=${career.id}`}
-                className="rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary transition hover:border-primary hover:text-primary sm:text-sm"
+                className="rounded-full border-2 border-border bg-surface px-3.5 py-1.5 text-xs font-bold text-secondary transition hover:-translate-y-0.5 hover:border-primary hover:text-primary sm:text-sm"
               >
                 {career.name}
               </Link>
@@ -78,16 +144,15 @@ export default function Home() {
         </section>
 
         <section className="mt-14">
-          <h2 className="mb-4 font-heading text-xl font-bold text-text sm:text-2xl">
-            Preguntas Frecuentes
+          <h2 className="mb-4 font-heading text-2xl font-bold text-text sm:text-3xl">
+            ❓ Preguntas frecuentes
           </h2>
           <FAQSection />
         </section>
 
         <AdSlot variant="bottom" />
-        <div className="ad-smartlink mt-2 text-center text-xs text-text-muted">
-          <AdSlot variant="smartlink" />
-        </div>
+
+        <AdvertiseBanner />
       </div>
     </>
   );

@@ -3,27 +3,35 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #1e40af;
-  --color-primary-dark: #1e3a8a;
-  --color-secondary: #374151;
-  --color-accent: #10b981;
-  --color-background: #f9fafb;
+  --color-primary: #2447d6;
+  --color-primary-dark: #172b85;
+  --color-secondary: #334155;
+  --color-accent: #059669;
+  --color-pop: #ea580c;
+  --color-sun: #fde047;
+  --color-ink: #0f172a;
+  --color-background: #f4f5f9;
   --color-surface: #ffffff;
-  --color-text: #1f2937;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
+  --color-text: #0f172a;
+  --color-text-muted: #5b6478;
+  --color-border: #d5d9e6;
+  --dot: rgba(15, 23, 42, 0.07);
 }
 
 .dark {
-  --color-primary: #3b82f6;
-  --color-primary-dark: #60a5fa;
-  --color-secondary: #d1d5db;
+  --color-primary: #8fb0ff;
+  --color-primary-dark: #3454d1;
+  --color-secondary: #cbd5e1;
   --color-accent: #34d399;
-  --color-background: #0f172a;
-  --color-surface: #1e293b;
+  --color-pop: #fb923c;
+  --color-sun: #fde047;
+  --color-ink: #03060f;
+  --color-background: #0b1020;
+  --color-surface: #151c33;
   --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-border: #334155;
+  --color-text-muted: #9aa5bd;
+  --color-border: #2a3557;
+  --dot: rgba(148, 163, 184, 0.08);
 }
 
 @theme inline {
@@ -31,19 +39,113 @@
   --color-primary-dark: var(--color-primary-dark);
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
+  --color-pop: var(--color-pop);
+  --color-sun: var(--color-sun);
+  --color-ink: var(--color-ink);
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
   --color-border: var(--color-border);
-  --font-heading: var(--font-poppins);
-  --font-sans: var(--font-inter);
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-body);
 }
 
 body {
-  background: var(--color-background);
+  background-color: var(--color-background);
+  background-image: radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   color: var(--color-text);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  /* Tarjeta con contorno y sombra dura, estilo interfaz de juego. */
+  .game-card {
+    border: 2px solid var(--color-ink);
+    border-radius: 1.25rem;
+    background: var(--color-surface);
+    box-shadow: 5px 5px 0 var(--color-ink);
+  }
+
+  .dark .game-card {
+    border-color: var(--color-border);
+  }
+
+  .game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 0.9rem;
+    background: var(--color-primary);
+    color: #ffffff;
+    font-family: var(--font-display), sans-serif;
+    font-weight: 600;
+    box-shadow: 0 4px 0 var(--color-ink);
+    cursor: pointer;
+    transition:
+      transform 0.08s ease,
+      box-shadow 0.08s ease,
+      filter 0.15s ease;
+  }
+
+  .dark .game-btn {
+    background: var(--color-primary-dark);
+  }
+
+  .game-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  .game-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--color-ink);
+  }
+
+  .game-btn-sun {
+    background: var(--color-sun);
+    color: #0f172a;
+  }
+
+  .dark .game-btn-sun {
+    background: var(--color-sun);
+  }
+
+  /* Fondo de las cabeceras: degradado vivo con brillo. */
+  .game-hero {
+    background:
+      radial-gradient(circle at 12% 15%, rgba(253, 224, 71, 0.16), transparent 32%),
+      radial-gradient(circle at 90% 0%, rgba(96, 165, 250, 0.28), transparent 42%),
+      linear-gradient(135deg, #0f1b3d 0%, #1e3a8a 100%);
+    color: #ffffff;
+  }
+
+  .game-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-sun);
+    color: #0f172a;
+    font-family: var(--font-display), sans-serif;
+    font-weight: 600;
+    box-shadow: 2px 2px 0 var(--color-ink);
+  }
+
+  .text-outline {
+    text-shadow:
+      3px 3px 0 var(--color-ink),
+      -1px -1px 0 var(--color-ink),
+      1px -1px 0 var(--color-ink),
+      -1px 1px 0 var(--color-ink);
+  }
+}
+
+input[type="range"] {
+  accent-color: var(--color-primary);
 }
 
 @keyframes fade-in-up {
@@ -57,6 +159,65 @@ body {
   }
 }
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(6deg);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.4;
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  70%,
+  100% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+  90% {
+    transform: translateX(-2px);
+  }
+}
+
+.animate-nudge {
+  animation: nudge 2.4s ease-in-out infinite;
+}
+
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out both;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pop-in {
+  animation: pop-in 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-float,
+  .animate-nudge,
+  .animate-pop-in {
+    animation: none;
+  }
 }

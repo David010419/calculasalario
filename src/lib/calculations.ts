@@ -1,4 +1,5 @@
 import { NATIONAL_STATS, getCCAA, getCareer, getSector } from "./data";
+import { getScenario, type ScenarioId, type TaxBracket } from "./scenarios";
 import type {
   CalculatorInput,
   Career,
@@ -33,26 +34,54 @@ export function calcGrossAnnual(input: CalculatorInput): number {
   return Math.round(withModifiers / 50) * 50;
 }
 
-const SS_RATE = 0.0635;
-const SS_MAX_BASE = 56646; // tope base cotización 2024
-const MINIMO_PERSONAL = 5550;
+// Cotización del trabajador 2026: 4,70 % comunes + 1,55 % desempleo + 0,10 % FP + 0,15 % MEI.
+const SS_RATE = 0.065;
+const SS_MAX_BASE = 61214.4; // tope base cotización 2026 (5.101,20 €/mes)
+const GASTOS_DEDUCIBLES = 2000;
 
-const IRPF_BRACKETS = [
-  { upTo: 12450, rate: 0.19 },
-  { upTo: 20200, rate: 0.24 },
-  { upTo: 35200, rate: 0.30 },
-  { upTo: 60000, rate: 0.37 },
-  { upTo: 300000, rate: 0.45 },
-  { upTo: Infinity, rate: 0.47 },
-];
+// Deducción para que el SMI no tribute (2026): 590,89 € hasta 17.094 €, decreciente hasta 20.000 €.
+const SMI_DEDUCTION = 590.89;
+const SMI_DEDUCTION_FULL_UNTIL = 17094;
+const SMI_DEDUCTION_ENDS_AT = 20000;
 
-export function calcIRPF(taxableBase: number): number {
+const MINIMOS_DESCENDIENTES = [2400, 2700, 4000, 4500];
+
+/** Mínimo por descendientes, repartido a partes iguales entre los dos progenitores. */
+function minimoDescendientes(hijos: number): number {
+  let total = 0;
+  for (let i = 0; i < hijos; i++) {
+    total += MINIMOS_DESCENDIENTES[Math.min(i, MINIMOS_DESCENDIENTES.length - 1)];
+  }
+  return total / 2;
+}
+
+/** Reducción por obtención de rendimientos del trabajo (art. 20 LIRPF). */
+function reduccionRendimientosTrabajo(rendimientoNeto: number): number {
+  if (rendimientoNeto <= 14852) return 7302;
+  if (rendimientoNeto <= 17673.52) return 7302 - 1.75 * (rendimientoNeto - 14852);
+  if (rendimientoNeto <= 19747.5) return 2364.34 - 1.14 * (rendimientoNeto - 17673.52);
+  return 0;
+}
+
+function deduccionSMI(brutoAnual: number): number {
+  if (brutoAnual <= SMI_DEDUCTION_FULL_UNTIL) return SMI_DEDUCTION;
+  if (brutoAnual >= SMI_DEDUCTION_ENDS_AT) return 0;
+  return (
+    (SMI_DEDUCTION * (SMI_DEDUCTION_ENDS_AT - brutoAnual)) /
+    (SMI_DEDUCTION_ENDS_AT - SMI_DEDUCTION_FULL_UNTIL)
+  );
+}
+
+export function calcIRPF(
+  taxableBase: number,
+  brackets: TaxBracket[] = getScenario("actual").brackets
+): number {
   if (taxableBase <= 0) return 0;
   let remaining = taxableBase;
   let lower = 0;
   let irpf = 0;
 
-  for (const bracket of IRPF_BRACKETS) {
+  for (const bracket of brackets) {
     const bracketSize = bracket.upTo - lower;
     const taxedInBracket = Math.min(remaining, bracketSize);
     if (taxedInBracket <= 0) break;
@@ -65,10 +94,27 @@ export function calcIRPF(taxableBase: number): number {
   return irpf;
 }
 
-export function calcBreakdown(brutoAnual: number): SalaryBreakdown {
+export function calcBreakdown(
+  brutoAnual: number,
+  scenarioId: ScenarioId = "actual",
+  hijos = 0
+): SalaryBreakdown {
+  const scenario = getScenario(scenarioId);
+  const brackets = scenario.brackets.map((b) => ({
+    upTo: b.upTo,
+    rate: Math.max(0, b.rate - scenario.rateCutPerChild * hijos),
+  }));
+  const minimo =
+    scenario.minimoPersonal + minimoDescendientes(hijos) * scenario.descendientesMultiplier;
   const seguridadSocial = Math.min(brutoAnual, SS_MAX_BASE) * SS_RATE;
-  const taxableBase = Math.max(0, brutoAnual - seguridadSocial - MINIMO_PERSONAL);
-  const irpf = calcIRPF(taxableBase);
+  const rendimientoNeto = brutoAnual - seguridadSocial;
+  const taxableBase = Math.max(
+    0,
+    rendimientoNeto - GASTOS_DEDUCIBLES - reduccionRendimientosTrabajo(rendimientoNeto)
+  );
+  // El mínimo personal y familiar no reduce la base: se resta la cuota que le correspondería.
+  const cuota = calcIRPF(taxableBase, brackets) - calcIRPF(minimo, brackets);
+  const irpf = Math.max(0, cuota - deduccionSMI(brutoAnual));
   const netoAnual = brutoAnual - seguridadSocial - irpf;
   const netoMensual = netoAnual / 12;
   const tipoEfectivo = brutoAnual > 0 ? ((seguridadSocial + irpf) / brutoAnual) * 100 : 0;

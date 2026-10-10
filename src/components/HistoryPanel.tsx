@@ -18,7 +18,7 @@ export default function HistoryPanel({ entries, onSelect, onClear }: HistoryPane
   if (entries.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-4">
+    <div className="game-card p-4">
       <div className="mb-2 flex items-center justify-between">
         <h3 className="font-heading text-sm font-semibold text-text">Búsquedas recientes</h3>
         <button onClick={onClear} className="text-xs text-text-muted hover:text-primary cursor-pointer">

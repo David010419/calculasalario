@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CAREERS, CCAAS } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Sobre Nosotros | Calculadora Salarios España 2025",
+  title: "Sobre nosotros y metodología",
   description:
     "Conoce la metodología detrás de la Calculadora de Salarios España: fuentes de datos, cálculo de IRPF y objetivo de la herramienta.",
   alternates: { canonical: "/sobre" },

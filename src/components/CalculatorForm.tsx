@@ -16,7 +16,7 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
         e.preventDefault();
         onSubmit();
       }}
-      className="space-y-5 rounded-2xl border border-border bg-surface p-5 shadow-sm sm:p-6"
+      className="space-y-5 game-card p-5 sm:p-6"
     >
       <div>
         <label htmlFor="carrera" className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-text-muted sm:text-sm">
@@ -26,7 +26,7 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
           id="carrera"
           value={input.careerId}
           onChange={(e) => onChange({ ...input, careerId: e.target.value })}
-          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
+          className="w-full rounded-xl border-2 border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
         >
           {CAREERS.map((career) => (
             <option key={career.id} value={career.id}>
@@ -68,7 +68,7 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
           id="ccaa"
           value={input.ccaaId}
           onChange={(e) => onChange({ ...input, ccaaId: e.target.value })}
-          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
+          className="w-full rounded-xl border-2 border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
         >
           {CCAAS.map((ccaa) => (
             <option key={ccaa.id} value={ccaa.id}>
@@ -86,7 +86,7 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
           id="sector"
           value={input.sectorId}
           onChange={(e) => onChange({ ...input, sectorId: e.target.value as SectorId })}
-          className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
+          className="w-full rounded-xl border-2 border-border bg-background px-3 py-2.5 text-sm text-text focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-base"
         >
           {SECTORS.map((sector) => (
             <option key={sector.id} value={sector.id}>
@@ -106,9 +106,9 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
             return (
               <label
                 key={level.id}
-                className={`cursor-pointer rounded-lg border px-2 py-2.5 text-center text-sm font-medium transition ${
+                className={`cursor-pointer rounded-xl border-2 px-2 py-2.5 text-center text-sm font-semibold transition ${
                   active
-                    ? "border-primary bg-primary/10 text-primary"
+                    ? "border-ink bg-sun text-[#0f172a] shadow-[2px_2px_0_var(--color-ink)]"
                     : "border-border text-secondary hover:border-primary/50"
                 }`}
               >
@@ -129,9 +129,9 @@ export default function CalculatorForm({ input, onChange, onSubmit }: Calculator
 
       <button
         type="submit"
-        className="w-full rounded-lg bg-primary px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-primary-dark active:scale-[0.99] cursor-pointer"
+        className="game-btn w-full px-4 py-3 text-lg"
       >
-        Calcular mi salario
+        Calcular mi salario 🚀
       </button>
     </form>
   );

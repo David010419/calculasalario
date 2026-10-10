@@ -17,7 +17,7 @@ export const FAQS: FAQItem[] = [
   {
     question: "¿Incluye impuestos el cálculo?",
     answer:
-      "Sí. Aplicamos una estimación de la cotización a la Seguridad Social y de la retención de IRPF según los tramos estatales de 2024-2025, para mostrarte tanto tu salario bruto como el neto que recibirías realmente.",
+      "Sí. Aplicamos una estimación de la cotización a la Seguridad Social y de la retención de IRPF con la normativa de 2026, para mostrarte tanto tu salario bruto como el neto que recibirías realmente.",
   },
   {
     question: "¿Es un cálculo 100% exacto?",

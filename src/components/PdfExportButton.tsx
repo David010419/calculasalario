@@ -26,7 +26,7 @@ export default function PdfExportButton({ input, result }: PdfExportButtonProps)
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
       doc.setTextColor(30, 64, 175);
-      doc.text("Calculadora de Salarios España 2025", 14, 20);
+      doc.text("CalculaSalario · Calculadora de salarios España 2026", 14, 20);
 
       doc.setFontSize(13);
       doc.setTextColor(31, 41, 55);

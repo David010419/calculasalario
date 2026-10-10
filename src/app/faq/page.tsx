@@ -5,7 +5,7 @@ import FaqJsonLd from "@/components/FaqJsonLd";
 import AdSlot from "@/components/AdSlot";
 
 export const metadata: Metadata = {
-  title: "Preguntas Frecuentes | Calculadora Salarios España 2025",
+  title: "Preguntas frecuentes sobre salarios, IRPF y sueldo neto 2026",
   description:
     "Resolvemos las dudas más comunes sobre cómo funciona la calculadora de salarios España: cálculo de IRPF, comunidades autónomas, proyección de carrera y más.",
   alternates: { canonical: "/faq" },
@@ -28,7 +28,7 @@ export default function FaqPage() {
         <FAQSection />
       </div>
 
-      <div className="mt-10 rounded-2xl border border-border bg-surface p-6 text-center">
+      <div className="mt-10 game-card p-6 text-center">
         <p className="text-sm text-text-muted">¿No encuentras respuesta a tu duda?</p>
         <Link href="/" className="mt-2 inline-block font-semibold text-primary hover:underline">
           Vuelve a la calculadora →
