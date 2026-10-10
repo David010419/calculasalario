@@ -3,14 +3,10 @@
 import { useState } from "react";
 import { formatEUR } from "@/lib/calculations";
 import { SALARY_PAGES, salarySlug } from "@/lib/seo-pages";
+import { resultShareText, type ShareRow } from "@/lib/share";
+import TweetPreview from "./TweetPreview";
 
-export interface ShareRow {
-  id: string;
-  party: string;
-  color: string;
-  netoMensual: number;
-  diffMensual: number;
-}
+export type { ShareRow };
 
 interface ShareResultsProps {
   brutoAnual: number;
@@ -32,19 +28,6 @@ function sharePath(brutoAnual: number): string {
     Math.abs(b - brutoAnual) < Math.abs(a - brutoAnual) ? b : a
   );
   return `/salario-segun-gobierno/${salarySlug(nearest)}`;
-}
-
-function shareText(brutoAnual: number, hijos: number, rows: ShareRow[]): string {
-  const actual = rows.find((r) => r.id === "actual") ?? rows[0];
-  const others = rows.filter((r) => r.id !== actual.id);
-  const hijosText = hijos > 0 ? ` y ${hijos === 1 ? "1 hijo" : `${hijos} hijos`}` : "";
-  return [
-    `Con ${formatEUR(brutoAnual)} brutos${hijosText} hoy cobro ${formatEUR(actual.netoMensual)} netos al mes.`,
-    "Si cambia el gobierno:",
-    ...others.map((r) => `· ${r.party}: ${formatEUR(r.netoMensual)} (${signed(r.diffMensual)}/mes)`),
-    "",
-    "¿Y tú? Prueba el tuyo y comparte 👇",
-  ].join("\n");
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -151,7 +134,7 @@ export default function ShareResults({ brutoAnual, hijos, rows }: ShareResultsPr
   function shareOnX() {
     const url = `${window.location.origin}${sharePath(brutoAnual)}`;
     const intent = new URL("https://twitter.com/intent/tweet");
-    intent.searchParams.set("text", shareText(brutoAnual, hijos, rows));
+    intent.searchParams.set("text", resultShareText(brutoAnual, hijos, rows));
     intent.searchParams.set("url", url);
     window.open(intent.toString(), "_blank", "noopener,noreferrer");
   }
@@ -159,7 +142,7 @@ export default function ShareResults({ brutoAnual, hijos, rows }: ShareResultsPr
   function shareOnWhatsApp() {
     const url = `${window.location.origin}${sharePath(brutoAnual)}`;
     // encodeURIComponent en lugar de URLSearchParams: WhatsApp no siempre trata "+" como espacio.
-    const text = encodeURIComponent(`${shareText(brutoAnual, hijos, rows)}
+    const text = encodeURIComponent(`${resultShareText(brutoAnual, hijos, rows)}
 ${url}`);
     window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank", "noopener,noreferrer");
   }
@@ -200,7 +183,7 @@ ${url}`);
   async function copyLink() {
     const url = `${window.location.origin}${sharePath(brutoAnual)}`;
     try {
-      await navigator.clipboard.writeText(`${shareText(brutoAnual, hijos, rows)}\n${url}`);
+      await navigator.clipboard.writeText(`${resultShareText(brutoAnual, hijos, rows)}\n${url}`);
       setStatus("Texto y enlace copiados.");
     } catch {
       setStatus("No se pudo copiar. Copia el enlace de la barra de direcciones.");
@@ -219,6 +202,9 @@ ${url}`);
       <p className="mt-1 text-sm font-bold">
         Enseña cuánto cobrarías con cada partido y que prueben el suyo.
       </p>
+      <div className="mt-4">
+        <TweetPreview text={resultShareText(brutoAnual, hijos, rows)} />
+      </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <button
           type="button"

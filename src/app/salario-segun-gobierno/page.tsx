@@ -9,6 +9,7 @@ import {
   SectionTitle,
 } from "@/components/GovernmentBlocks";
 import AdvertiseBanner from "@/components/AdvertiseBanner";
+import CampaignBanner from "@/components/CampaignBanner";
 import JsonLd from "@/components/JsonLd";
 import { calcBreakdown, formatEUR } from "@/lib/calculations";
 import {
@@ -92,6 +93,8 @@ export default function SalarioSegunGobiernoPage() {
 
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <GovernmentSalaryTool />
+
+        <CampaignBanner />
 
         <SectionTitle>📊 Neto mensual por salario y partido</SectionTitle>
         <p className="mt-2 text-sm font-semibold text-text-muted">

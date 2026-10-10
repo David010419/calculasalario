@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Calculator from "@/components/Calculator";
 import AdSlot from "@/components/AdSlot";
 import AdvertiseBanner from "@/components/AdvertiseBanner";
+import CampaignBanner from "@/components/CampaignBanner";
 import FAQSection from "@/components/FAQSection";
 import FaqJsonLd from "@/components/FaqJsonLd";
 import PartyBadge from "@/components/PartyBadge";
@@ -125,6 +126,8 @@ export default function Home() {
             <TrendingCareers careers={CAREERS} limit={6} />
           </div>
         </section>
+
+        <CampaignBanner />
 
         <section className="mt-14">
           <h2 className="mb-4 font-heading text-2xl font-bold text-text sm:text-3xl">

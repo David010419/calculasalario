@@ -203,6 +203,7 @@ export default function GovernmentScenarios({
           rows={rows.map(({ scenario, breakdown, diffMensual }) => ({
             id: scenario.id,
             party: scenario.party,
+            emoji: scenario.emoji,
             color: scenario.badgeColor,
             netoMensual: breakdown.netoMensual,
             diffMensual,

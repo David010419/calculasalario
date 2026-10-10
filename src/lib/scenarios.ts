@@ -14,6 +14,8 @@ export interface TaxScenario {
   color: string;
   /** Variante del color con contraste suficiente para texto blanco encima. */
   badgeColor: string;
+  /** Círculo de color que identifica al partido en textos sin formato (tuits, WhatsApp). */
+  emoji: string;
   /** Segmento de URL de la página del partido. */
   slug: string;
   brackets: TaxBracket[];
@@ -48,6 +50,7 @@ export const SCENARIOS: TaxScenario[] = [
     buttonLabel: "Ley actual (Gobierno PSOE)",
     color: "#e30613",
     badgeColor: "#d10511",
+    emoji: "🔴",
     slug: "psoe",
     brackets: CURRENT_BRACKETS,
     minimoPersonal: CURRENT_MINIMO_PERSONAL,
@@ -74,6 +77,7 @@ export const SCENARIOS: TaxScenario[] = [
     buttonLabel: "Si gobernara el PP",
     color: "#0056a7",
     badgeColor: "#0056a7",
+    emoji: "🔵",
     slug: "pp",
     brackets: [
       { upTo: 13695, rate: 0.19 }, // 12.450 € +10 %
@@ -107,6 +111,7 @@ export const SCENARIOS: TaxScenario[] = [
     buttonLabel: "Si gobernara Vox",
     color: "#63be21",
     badgeColor: "#2f7d0e",
+    emoji: "🟢",
     slug: "vox",
     brackets: [
       { upTo: 70000, rate: 0.15 },
@@ -136,6 +141,7 @@ export const SCENARIOS: TaxScenario[] = [
     buttonLabel: "Si gobernara Sumar",
     color: "#e51c55",
     badgeColor: "#d0164b",
+    emoji: "🟣",
     slug: "sumar",
     brackets: [
       { upTo: 12450, rate: 0.19 },
