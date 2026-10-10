@@ -10,7 +10,8 @@ export interface ShareRow {
   diffMensual: number;
 }
 
-export const SHARE_HASHTAGS = "#29N #EleccionesGenerales";
+// Un hashtag no admite puntos, así que la marca va sin ".es". Se limita a dos para no pasar de 280 caracteres.
+export const SHARE_HASHTAGS = "#CalculaSalario #29N";
 
 function diffMark(value: number): string {
   if (value > 0) return ` ▲ +${formatEUR(value)}`;
