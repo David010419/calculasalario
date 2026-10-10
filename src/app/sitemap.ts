@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { GUIDES } from "@/lib/guides";
 import { SCENARIOS } from "@/lib/scenarios";
 import { SALARY_PAGES, salarySlug } from "@/lib/seo-pages";
 import { SITE_URL } from "@/lib/site";
@@ -15,6 +16,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly" as const,
       priority: 0.9,
+    })),
+    { url: `${SITE_URL}/guias`, lastModified, changeFrequency: "weekly", priority: 0.9 },
+    ...GUIDES.map((guide) => ({
+      url: `${SITE_URL}/guias/${guide.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     })),
     { url: `${SITE_URL}/empleos-en-auge`, lastModified, changeFrequency: "weekly", priority: 0.8 },
     ...SALARY_PAGES.map((bruto) => ({

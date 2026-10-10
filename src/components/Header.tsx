@@ -15,6 +15,7 @@ export default function Header() {
         </Link>
         <nav className="hidden items-center gap-5 text-sm font-bold text-secondary md:flex">
           <Link href="/" className="hover:text-primary">Calculadora</Link>
+          <Link href="/guias" className="hover:text-primary">Guías</Link>
           <Link href="/empleos-en-auge" className="hover:text-primary">Empleos en auge</Link>
           <Link href="/faq" className="hover:text-primary">FAQ</Link>
           <Link href="/sobre" className="hover:text-primary">Sobre nosotros</Link>

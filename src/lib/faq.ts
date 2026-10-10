@@ -7,7 +7,7 @@ export const FAQS: FAQItem[] = [
   {
     question: "¿Cómo se calcula el salario estimado?",
     answer:
-      "Partimos de rangos salariales reales por carrera basados en estudios de mercado y datos del Ministerio de Trabajo 2024-2025, y aplicamos modificadores según tus años de experiencia, nivel de especialización, la comunidad autónoma y el sector en el que trabajas.",
+      "Partimos de rangos salariales orientativos de elaboración propia para cada profesión y aplicamos modificadores según tus años de experiencia, nivel de especialización, la comunidad autónoma y el sector en el que trabajas.",
   },
   {
     question: "¿Por qué varía el salario por comunidad autónoma?",

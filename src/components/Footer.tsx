@@ -12,6 +12,7 @@ export default function Footer() {
           <nav className="flex flex-wrap gap-4">
             <Link href="/" className="hover:text-primary">Calculadora</Link>
             <Link href="/salario-segun-gobierno" className="hover:text-primary">Según el gobierno</Link>
+            <Link href="/guias" className="hover:text-primary">Guías</Link>
             <Link href="/empleos-en-auge" className="hover:text-primary">Empleos en auge</Link>
             <Link href="/faq" className="hover:text-primary">FAQ</Link>
             <Link href="/sobre" className="hover:text-primary">Sobre nosotros</Link>

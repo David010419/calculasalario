@@ -6,10 +6,23 @@ import AdvertiseBanner from "@/components/AdvertiseBanner";
 import CampaignBanner from "@/components/CampaignBanner";
 import FAQSection from "@/components/FAQSection";
 import FaqJsonLd from "@/components/FaqJsonLd";
+import GuideCard from "@/components/GuideCard";
 import PartyBadge from "@/components/PartyBadge";
 import TrendingCareers from "@/components/TrendingCareers";
 import { CAREERS } from "@/lib/data";
+import { getGuide, type Guide } from "@/lib/guides";
 import { SCENARIOS } from "@/lib/scenarios";
+
+const FEATURED_GUIDES = [
+  "como-conseguir-empleo-en-espana",
+  "que-estudiar-segun-el-empleo",
+  "como-leer-tu-nomina",
+  "como-negociar-el-sueldo",
+  "formacion-profesional-grados-y-salidas",
+  "tramos-irpf-2026",
+]
+  .map(getGuide)
+  .filter((guide): guide is Guide => Boolean(guide));
 
 export default function Home() {
   return (
@@ -124,6 +137,27 @@ export default function Home() {
           </div>
           <div className="mt-5">
             <TrendingCareers careers={CAREERS} limit={6} />
+          </div>
+        </section>
+
+        <section className="mt-14">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 className="font-heading text-2xl font-bold text-text sm:text-3xl">
+                📚 Guías para cobrar mejor y encontrar trabajo
+              </h2>
+              <p className="mt-1 text-sm font-semibold text-text-muted">
+                Nómina e impuestos, búsqueda de empleo y formación, explicado sin jerga.
+              </p>
+            </div>
+            <Link href="/guias" className="text-sm font-bold text-primary hover:underline">
+              Ver todas las guías →
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURED_GUIDES.map((guide) => (
+              <GuideCard key={guide.slug} guide={guide} />
+            ))}
           </div>
         </section>
 
