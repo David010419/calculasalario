@@ -72,7 +72,9 @@ export default function CookiesPage() {
         </div>
         <p>
           Las entradas técnicas son necesarias para que el sitio funcione como esperas y no
-          requieren consentimiento. No usamos cookies de analítica propias.
+          requieren consentimiento. Para saber cuántas visitas recibe el sitio usamos Vercel Web
+          Analytics, que no utiliza cookies ni guarda identificadores en tu dispositivo: solo
+          genera estadísticas agregadas y anónimas.
         </p>
       </LegalSection>
 

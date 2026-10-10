@@ -53,6 +53,11 @@ export default function PrivacidadPage() {
             garantizar la seguridad.
           </li>
           <li>
+            <strong className="text-text">Estadísticas de uso:</strong> medimos las visitas con
+            Vercel Web Analytics, que no usa cookies y solo ofrece datos agregados y anónimos
+            (páginas vistas, país, tipo de dispositivo y página de procedencia).
+          </li>
+          <li>
             <strong className="text-text">Correo electrónico:</strong> si nos escribes, trataremos
             tu dirección y el contenido del mensaje únicamente para responderte.
           </li>

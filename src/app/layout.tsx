@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Fredoka, Nunito } from "next/font/google";
 import { ADSENSE_CLIENT, CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/site";
 import Header from "@/components/Header";
@@ -126,6 +127,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <CookieBanner />
         <AdSenseLoader />
+        <Analytics />
       </body>
     </html>
   );
